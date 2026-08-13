@@ -1,0 +1,44 @@
+{
+  "name": "synthetic-05",
+  "description": "Synthetic CVRP instance: 5 customers uniform on a 100x100 grid, depot at centre, demands 5-20. Not a standard benchmark instance.",
+  "depot": {
+    "id": 0,
+    "x": 50.0,
+    "y": 50.0
+  },
+  "customers": [
+    {
+      "id": 1,
+      "x": 62.29,
+      "y": 74.18,
+      "demand": 5.0
+    },
+    {
+      "id": 2,
+      "x": 84.03,
+      "y": 77.6,
+      "demand": 12.0
+    },
+    {
+      "id": 3,
+      "x": 64.9,
+      "y": 90.09,
+      "demand": 8.0
+    },
+    {
+      "id": 4,
+      "x": 37.18,
+      "y": 86.84,
+      "demand": 17.0
+    },
+    {
+      "id": 5,
+      "x": 54.38,
+      "y": 57.39,
+      "demand": 5.0
+    }
+  ],
+  "fleet": {
+    "capacity": 60.0
+  }
+}

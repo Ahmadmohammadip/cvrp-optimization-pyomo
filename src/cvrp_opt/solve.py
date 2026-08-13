@@ -7,7 +7,9 @@ with a good incumbent is a useful answer — it just is not a proven one, and
 `CVRPResult.is_optimal` is the flag that keeps those apart.
 """
 
+import logging
 import time
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 
 from pyomo.environ import ConcreteModel, SolverFactory, value
@@ -96,7 +98,8 @@ def solve_cvrp(
             + ". Try a longer time limit or a smaller instance."
         )
 
-    model.solutions.load_from(results)
+    with _quiet_pyomo_solution_loading():
+        model.solutions.load_from(results)
 
     is_optimal = condition == TerminationCondition.optimal
     total_distance = value(model.total_distance)
@@ -133,6 +136,26 @@ def _route_distance(model: ConcreteModel, route: list, depot) -> float:
     return sum(
         value(model.cost[path[k], path[k + 1]]) for k in range(len(path) - 1)
     )
+
+
+@contextmanager
+def _quiet_pyomo_solution_loading():
+    """Silence Pyomo's warning about loading a solution from an aborted solve.
+
+    Hitting the time limit is an expected, supported outcome here, and the
+    result reports it through `is_optimal` and `gap`. Leaving the warning in
+    place would print an alarming message on every deliberate time-limited run
+    while telling the caller nothing the result object does not already say.
+
+    Scoped to the load call, so genuine Pyomo warnings elsewhere still surface.
+    """
+    logger = logging.getLogger("pyomo.core")
+    previous_level = logger.level
+    logger.setLevel(logging.ERROR)
+    try:
+        yield
+    finally:
+        logger.setLevel(previous_level)
 
 
 def reconstruct_routes(arcs: list[tuple], depot) -> list[list]:

@@ -1,0 +1,104 @@
+{
+  "name": "synthetic-15",
+  "description": "Synthetic CVRP instance: 15 customers uniform on a 100x100 grid, depot at centre, demands 5-20. Not a standard benchmark instance.",
+  "depot": {
+    "id": 0,
+    "x": 50.0,
+    "y": 50.0
+  },
+  "customers": [
+    {
+      "id": 1,
+      "x": 96.52,
+      "y": 1.17,
+      "demand": 6.0
+    },
+    {
+      "id": 2,
+      "x": 15.8,
+      "y": 98.63,
+      "demand": 5.0
+    },
+    {
+      "id": 3,
+      "x": 5.49,
+      "y": 80.49,
+      "demand": 9.0
+    },
+    {
+      "id": 4,
+      "x": 85.73,
+      "y": 99.98,
+      "demand": 12.0
+    },
+    {
+      "id": 5,
+      "x": 11.71,
+      "y": 46.63,
+      "demand": 16.0
+    },
+    {
+      "id": 6,
+      "x": 28.06,
+      "y": 26.33,
+      "demand": 12.0
+    },
+    {
+      "id": 7,
+      "x": 93.5,
+      "y": 20.64,
+      "demand": 16.0
+    },
+    {
+      "id": 8,
+      "x": 79.76,
+      "y": 22.34,
+      "demand": 18.0
+    },
+    {
+      "id": 9,
+      "x": 23.14,
+      "y": 45.55,
+      "demand": 18.0
+    },
+    {
+      "id": 10,
+      "x": 48.96,
+      "y": 46.11,
+      "demand": 16.0
+    },
+    {
+      "id": 11,
+      "x": 43.93,
+      "y": 31.52,
+      "demand": 19.0
+    },
+    {
+      "id": 12,
+      "x": 40.51,
+      "y": 86.36,
+      "demand": 7.0
+    },
+    {
+      "id": 13,
+      "x": 49.03,
+      "y": 94.5,
+      "demand": 5.0
+    },
+    {
+      "id": 14,
+      "x": 19.57,
+      "y": 53.39,
+      "demand": 5.0
+    },
+    {
+      "id": 15,
+      "x": 28.66,
+      "y": 49.5,
+      "demand": 8.0
+    }
+  ],
+  "fleet": {
+    "capacity": 60.0
+  }
+}
