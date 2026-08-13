@@ -1,0 +1,75 @@
+{
+  "environment": {
+    "generated_utc": "2026-08-13 10:51:24 UTC",
+    "solver": "appsi_highs",
+    "highspy_version": "1.15.1",
+    "pyomo_version": "6.10.1",
+    "python_version": "3.12.10",
+    "platform": "Windows 11 (AMD64)",
+    "processor": "AMD64 Family 25 Model 117 Stepping 2, AuthenticAMD",
+    "time_limit_seconds": 300.0,
+    "note": "Single run per instance. Rows with proven=false hit the time limit: their solve_time is a lower bound on the true time to optimality, not a measurement of it."
+  },
+  "results": [
+    {
+      "instance": "cvrp_05",
+      "n_customers": 5,
+      "k_min": 1,
+      "vehicles_used": 1,
+      "total_distance": 138.921,
+      "lower_bound": 138.921,
+      "gap": 0.0,
+      "solve_time": 0.27,
+      "proven": true,
+      "termination": "optimal"
+    },
+    {
+      "instance": "cvrp_10",
+      "n_customers": 10,
+      "k_min": 3,
+      "vehicles_used": 3,
+      "total_distance": 326.901,
+      "lower_bound": 326.901,
+      "gap": 0.0,
+      "solve_time": 1.87,
+      "proven": true,
+      "termination": "optimal"
+    },
+    {
+      "instance": "cvrp_15",
+      "n_customers": 15,
+      "k_min": 3,
+      "vehicles_used": 3,
+      "total_distance": 460.433,
+      "lower_bound": 460.391,
+      "gap": 9.1e-05,
+      "solve_time": 43.79,
+      "proven": true,
+      "termination": "optimal"
+    },
+    {
+      "instance": "cvrp_20",
+      "n_customers": 20,
+      "k_min": 5,
+      "vehicles_used": 5,
+      "total_distance": 598.807,
+      "lower_bound": 427.235,
+      "gap": 0.286523,
+      "solve_time": 300.06,
+      "proven": false,
+      "termination": "maxTimeLimit"
+    },
+    {
+      "instance": "cvrp_25",
+      "n_customers": 25,
+      "k_min": 6,
+      "vehicles_used": 6,
+      "total_distance": 779.455,
+      "lower_bound": 457.451,
+      "gap": 0.413114,
+      "solve_time": 300.08,
+      "proven": false,
+      "termination": "maxTimeLimit"
+    }
+  ]
+}
