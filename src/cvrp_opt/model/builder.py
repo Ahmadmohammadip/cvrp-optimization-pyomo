@@ -154,3 +154,19 @@ def build_cvrp_model(
     m.mtz_con = Constraint(m.A_C, rule=_mtz_rule)
 
     return m
+
+
+def build_from_system(system) -> ConcreteModel:
+    """Build the model from a validated `System` (see data/schema.py).
+
+    This is the entry point most callers want. The primitive `build_cvrp_model`
+    stays public because it predates the schema and is useful for testing the
+    formulation against hand-built instances with no file format involved.
+    """
+    return build_cvrp_model(
+        distance=system.distance_matrix(),
+        demand=system.demands,
+        capacity=system.fleet.capacity,
+        num_vehicles=system.num_vehicles,
+        depot=system.depot.id,
+    )
