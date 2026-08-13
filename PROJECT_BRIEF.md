@@ -218,3 +218,68 @@ is a standard, well-established textbook formulation (see Toth & Vigo,
 original. Nothing in this document should be treated as already
 implemented or as verified benchmark data; the solve-time benchmarks in
 Phase 6 must be generated from real runs when that phase is built.
+
+## 7. Decisions made after this brief
+Everything above is preserved as written, as the record of what was agreed
+before implementation started. The following decisions were taken afterwards
+and **supersede** it where they conflict. `docs/formulation.md` describes what
+the code actually does.
+
+### 7.1 Depot degree is `<= K`, not `= K` (changes §1.5)
+The depot degree constraint is now
+
+$$\sum_{j \in V_C} x_{0j} \le K, \qquad \sum_{j \in V_C} x_{0j} = \sum_{i \in V_C} x_{i0}$$
+
+rather than both sums equalling $K$.
+
+Section 1.6 calls running above $K_{min}$ "a valid, common scenario", but under
+equality every surplus vehicle is *forced* into service, so offering a larger
+fleet can only lengthen the tour. Measured on the 10-customer sample instance,
+`<= K` returns the same 326.90 with 3 vehicles whether 3, 4, 5, or 6 are
+offered; under equality the objective climbs with each addition.
+
+Equality delivered depot balance for free ($K$ out, $K$ back). Inequality does
+not, so the balance constraint is stated explicitly — without it, departures
+and returns could fail to match.
+
+Two consequences worth recording: the weaker linear relaxation makes this form
+slower to solve, and there is no longer any need to require $K \le n$, since
+surplus vehicles simply go unused rather than making the instance infeasible.
+
+### 7.2 The solve interface does not raise on a time limit
+Section 1.7 did not cover what happens when branch-and-bound is stopped early.
+Because this is a MILP over an NP-hard problem, a time-limited run with a good
+incumbent is a useful answer, so `solve_cvrp` returns it with
+`is_optimal=False` plus the gap and lower bound. It raises only when there is
+genuinely nothing to return: an infeasible instance, or a limit reached before
+any feasible route set was found.
+
+This differs from the sibling repos, whose pure LPs are always solved to
+optimality and which therefore raise on anything else.
+
+### 7.3 Benchmark budget: 300 seconds per instance
+Phase 6 runs with a 300s limit. At that budget the 5-, 10-, and 15-customer
+instances prove optimality and the 20- and 25-customer ones do not — which is
+the demonstration the phase exists for. Time-limited rows are reported as
+`>300s` with their gap, since a stopped run bounds the solve time from below
+rather than measuring it.
+
+### 7.4 Public at completion rather than from commit 1 (changes §5)
+All eight phases were built and committed locally, then pushed as a complete
+history to a new public repo. The phase-per-commit convention and the commit
+message prefixes in §5 were kept; only the timing of publication changed.
+
+### 7.5 Brief filename
+Renamed from `CVRP_PROJECT_BRIEF.md` to `PROJECT_BRIEF.md`, matching this
+document's own §2 repo tree and the two sibling repos.
+
+### 7.6 Minor additions not specified in §2
+- `src/cvrp_opt/benchmark.py` as a module with a CLI, rather than an ad-hoc
+  script, so the benchmark is importable and testable.
+- Beyond the four test files in §2: `test_schema_validation.py`,
+  `test_loaders.py`, `test_viz.py`, `test_benchmark.py`, and a `conftest.py`
+  holding the Agg backend selection and the hand-checkable instance.
+- `data/sample_instances/generate_instances.py`, the seeded generator for the
+  sample data, committed so the instances are inspectable.
+- `load_instance_csv_text()` alongside the path-based loader, so the Streamlit
+  app can parse an uploaded file without a temp file.

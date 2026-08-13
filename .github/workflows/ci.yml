@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      # Pure MILP — HiGHS via the highspy wheel is the only solver needed.
+      # No conda, no Ipopt. CBC is documented as a fallback but not installed.
+      - name: Install package
+        run: pip install -e ".[dev,solvers,viz]"
+
+      - name: Lint with ruff
+        run: ruff check src tests app data
+
+      # The test suite deliberately solves only the 5- and 10-customer
+      # instances. The larger ones are for the benchmark, which is never run
+      # here: an exact CVRP solve at 20+ customers can outlast the whole job.
+      - name: Run tests
+        run: pytest -v
+
+      - name: Streamlit app syntax smoke test
+        run: python -m py_compile app/streamlit_app.py
