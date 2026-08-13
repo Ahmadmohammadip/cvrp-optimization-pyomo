@@ -45,6 +45,7 @@ this solves more slowly than the equality form. See docs/formulation.md.
 """
 
 from pyomo.environ import (
+    Any,
     Binary,
     ConcreteModel,
     Constraint,
@@ -106,6 +107,10 @@ def build_cvrp_model(
     m.demand = Param(m.V_C, initialize={i: demand[i] for i in customers})
     m.capacity = Param(initialize=capacity)
     m.num_vehicles = Param(initialize=num_vehicles)
+    # Carried on the model so route reconstruction can find the depot without
+    # the caller having to pass it a second time. `within=Any` because node ids
+    # are not required to be numeric.
+    m.depot = Param(initialize=depot, within=Any)
 
     # --- Variables ---
     m.x = Var(m.A, domain=Binary)

@@ -108,6 +108,11 @@ def solve_cvrp(
         if value(model.x[i, j]) > ARC_SELECTION_THRESHOLD
     ]
 
+    depot = value(model.depot)
+    routes = reconstruct_routes(arcs, depot)
+    route_loads = [sum(value(model.demand[c]) for c in route) for route in routes]
+    route_distances = [_route_distance(model, route, depot) for route in routes]
+
     return CVRPResult(
         arcs=arcs,
         total_distance=total_distance,
@@ -116,7 +121,87 @@ def solve_cvrp(
         is_optimal=is_optimal,
         termination=str(condition),
         solve_time=elapsed,
+        routes=routes,
+        route_loads=route_loads,
+        route_distances=route_distances,
     )
+
+
+def _route_distance(model: ConcreteModel, route: list, depot) -> float:
+    """Depot -> customers in order -> depot, using the model's own arc costs."""
+    path = [depot, *route, depot]
+    return sum(
+        value(model.cost[path[k], path[k + 1]]) for k in range(len(path) - 1)
+    )
+
+
+def reconstruct_routes(arcs: list[tuple], depot) -> list[list]:
+    """Turn a set of selected arcs into one ordered customer list per vehicle.
+
+    The MILP returns arcs, not routes. Walking them is easy to get subtly
+    wrong, so this is a pure function over plain tuples — no Pyomo objects —
+    and it refuses to guess: anything that is not a clean set of depot-to-depot
+    paths covering every customer once raises instead of returning a
+    plausible-looking partial answer.
+
+    A silently truncated route is far worse than a loud failure here, because
+    it looks like a valid (and cheaper) solution.
+    """
+    if not arcs:
+        return []
+
+    successors: dict = {}
+    for i, j in arcs:
+        if i == depot:
+            continue
+        if i in successors:
+            raise ValueError(
+                f"node {i!r} has more than one outgoing arc "
+                f"({i!r}->{successors[i]!r} and {i!r}->{j!r}) — "
+                f"the degree constraints should have prevented this"
+            )
+        successors[i] = j
+
+    customers = {i for (i, _) in arcs if i != depot} | {
+        j for (_, j) in arcs if j != depot
+    }
+    departures = [j for (i, j) in arcs if i == depot]
+
+    routes: list[list] = []
+    visited: set = set()
+
+    for start in departures:
+        route: list = []
+        node = start
+        while node != depot:
+            if node in visited:
+                raise ValueError(
+                    f"node {node!r} appears on more than one route — arcs do not "
+                    f"form disjoint paths"
+                )
+            if node not in successors:
+                raise ValueError(
+                    f"node {node!r} has no outgoing arc — route from depot {depot!r} "
+                    f"is a dead end"
+                )
+            visited.add(node)
+            route.append(node)
+            node = successors[node]
+            if len(route) > len(customers):
+                raise ValueError(
+                    f"route from depot {depot!r} exceeded {len(customers)} stops "
+                    f"without returning — the arcs contain a cycle"
+                )
+        routes.append(route)
+
+    unreached = customers - visited
+    if unreached:
+        raise ValueError(
+            f"customers {sorted(unreached, key=str)} are not reachable from the depot — "
+            f"the arcs contain a subtour, which MTZ should have eliminated"
+        )
+
+    return routes
 
 
 def _as_float(bound) -> float | None:
