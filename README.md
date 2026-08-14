@@ -112,6 +112,28 @@ if not result.is_optimal:
     print(f"Time limit hit — within {result.gap:.1%} of optimal")
 ```
 
+## What it produces
+
+```python
+from cvrp_opt.viz import plot_routes
+
+plot_routes(system, result).savefig("route_map.png")
+```
+
+![Optimal routes for the 10-customer sample instance](docs/images/route_map.png)
+
+The 10-customer sample instance, solved to proven optimality: three vehicles,
+326.9 total distance, each route leaving and returning to the depot (the black
+square) with its load against capacity in the legend. Arrows show travel
+direction, so a route reads as a sequence rather than a shape.
+
+The title states whether optimality was proven, and says so on every figure — a
+route map looks equally convincing either way, so the caveat belongs on the
+picture rather than only in the console.
+
+`plot_capacity_utilization` and `plot_benchmark` cover load per vehicle and
+solve time against instance size.
+
 ## Repo layout
 
 ```
@@ -127,7 +149,7 @@ cvrp-optimization-pyomo/
 ├── notebooks/01_walkthrough.ipynb
 ├── app/streamlit_app.py
 ├── tests/
-├── docs/formulation.md, benchmark_results.json
+├── docs/                   # formulation.md, benchmark_results.json, images/
 └── .github/workflows/ci.yml
 ```
 
