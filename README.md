@@ -180,6 +180,19 @@ not expose. Single depot, homogeneous fleet, no time windows, no
 pickup-and-delivery, no split deliveries. Full list with rationale in
 `docs/formulation.md`.
 
+## Companion repos
+
+Three standalone optimization models built to the same conventions — validated
+dataclasses that fail loudly at construction, a Pyomo builder that never touches
+raw files, and a result dataclass rather than a live model — but sharing no code.
+
+- [economic-dispatch-pyomo](https://github.com/Ahmadmohammadip/economic-dispatch-pyomo)
+  — multi-period, multi-bus DC-OPF economic dispatch with generator ramping,
+  curtailable renewables, storage, and locational marginal prices.
+- [battery-storage-optimization-pyomo](https://github.com/Ahmadmohammadip/battery-storage-optimization-pyomo)
+  — battery energy arbitrage co-optimized with frequency regulation capacity
+  (revenue stacking) as a single LP.
+
 ## License
 
 MIT — see `LICENSE`.
