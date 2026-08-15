@@ -204,7 +204,7 @@ pickup-and-delivery, no split deliveries. Full list with rationale in
 
 ## Companion repos
 
-Three standalone optimization models built to the same conventions — validated
+Four standalone optimization models built to the same conventions — validated
 dataclasses that fail loudly at construction, a Pyomo builder that never touches
 raw files, and a result dataclass rather than a live model — but sharing no code.
 
@@ -214,6 +214,10 @@ raw files, and a result dataclass rather than a live model — but sharing no co
 - [battery-storage-optimization-pyomo](https://github.com/Ahmadmohammadip/battery-storage-optimization-pyomo)
   — battery energy arbitrage co-optimized with frequency regulation capacity
   (revenue stacking) as a single LP.
+- [supply-chain-network-optimization-pyomo](https://github.com/Ahmadmohammadip/supply-chain-network-optimization-pyomo)
+  — multi-echelon network design and production-distribution-inventory
+  planning as one MILP: which plants and warehouses to open, and how to run
+  them.
 
 ## License
 
