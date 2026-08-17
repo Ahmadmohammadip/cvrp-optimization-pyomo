@@ -204,20 +204,23 @@ pickup-and-delivery, no split deliveries. Full list with rationale in
 
 ## Companion repos
 
-Four standalone optimization models built to the same conventions — validated
+Five standalone optimization models built to the same conventions — validated
 dataclasses that fail loudly at construction, a Pyomo builder that never touches
 raw files, and a result dataclass rather than a live model — but sharing no code.
 
 - [economic-dispatch-pyomo](https://github.com/Ahmadmohammadip/economic-dispatch-pyomo)
-  — multi-period, multi-bus DC-OPF economic dispatch with generator ramping,
-  curtailable renewables, storage, and locational marginal prices.
+  — multi-period, multi-bus DC-OPF economic dispatch with generator
+  ramping, curtailable renewables, storage, and locational marginal prices.
 - [battery-storage-optimization-pyomo](https://github.com/Ahmadmohammadip/battery-storage-optimization-pyomo)
-  — battery energy arbitrage co-optimized with frequency regulation capacity
-  (revenue stacking) as a single LP.
+  — battery energy arbitrage co-optimized with frequency regulation
+  capacity (revenue stacking) as a single LP.
 - [supply-chain-network-optimization-pyomo](https://github.com/Ahmadmohammadip/supply-chain-network-optimization-pyomo)
   — multi-echelon network design and production-distribution-inventory
-  planning as one MILP: which plants and warehouses to open, and how to run
-  them.
+  planning as one MILP: which plants and warehouses to open, and how to
+  run them.
+- [forecast-driven-bess-dispatch](https://github.com/Ahmadmohammadip/forecast-driven-bess-dispatch)
+  — ML forecasts of load, PV and price feeding a Pyomo dispatch LP for a
+  behind-the-meter battery, measuring what the forecast is actually worth.
 
 ## License
 
