@@ -204,9 +204,9 @@ pickup-and-delivery, no split deliveries. Full list with rationale in
 
 ## Companion repos
 
-Five standalone optimization models built to the same conventions — validated
-dataclasses that fail loudly at construction, a Pyomo builder that never touches
-raw files, and a result dataclass rather than a live model — but sharing no code.
+Six standalone optimization models built to the same conventions — validated
+dataclasses that fail loudly at construction, a builder that never touches raw
+files, and a result dataclass rather than a live model — but sharing no code.
 
 - [economic-dispatch-pyomo](https://github.com/Ahmadmohammadip/economic-dispatch-pyomo)
   — multi-period, multi-bus DC-OPF economic dispatch with generator
@@ -221,6 +221,10 @@ raw files, and a result dataclass rather than a live model — but sharing no co
 - [forecast-driven-bess-dispatch](https://github.com/Ahmadmohammadip/forecast-driven-bess-dispatch)
   — ML forecasts of load, PV and price feeding a Pyomo dispatch LP for a
   behind-the-meter battery, measuring what the forecast is actually worth.
+- [building-energy-digital-twin](https://github.com/Ahmadmohammadip/building-energy-digital-twin)
+  — a stateful digital twin of an office: an RC thermal model identified
+  from telemetry, fault detection scored against injected faults, and
+  comfort-constrained MPC over HVAC and a battery.
 
 ## License
 
